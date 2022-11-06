@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: market-research
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB_NAME:mrktresearch}
+    username: ${POSTGRES_USER:mcadmin}
+    password: ${POSTGRES_PASS:mcadmin}
+  r2dbc:
+    url: r2dbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB_NAME:mrktresearch}
+    username: ${POSTGRES_USER:mcadmin}
+    password: ${POSTGRES_PASS:mcadmin}
+    pool:
+      name: MRKT-RSH-POOL
+      initial-size: 10
+      max-size: 50
+  liquibase:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB_NAME:mrktresearch}
+    user: ${POSTGRES_USER:mcadmin}
+    password: ${POSTGRES_PASS:mcadmin}
+    change-log: classpath:/db/changelog/master.xml
+    enabled: ${LIQUIBASE_ENABLED:true}
+
+logging:
+  level:
+    root: ${MRKT_ROOT_LOGGING_ROOT:INFO}
+    #org.springframework: DEBUG
+    com.github.nmicra: ${MRKT_LOGGING_LEVEL:DEBUG}
+    io.r2dbc.postgresql.QUERY: DEBUG # for queries
+    io.r2dbc.postgresql.PARAM: DEBUG # for parameters
+
+server:
+  port: 8383
+# docker run --name mrktresearch -e POSTGRES_DB=mrktresearch -v %cd%/postgres_data:/var/lib/postgresql/data -e POSTGRES_USER=mcadmin -e POSTGRES_PASSWORD=mcadmin -p 5432:5432 -d postgres
+
+
